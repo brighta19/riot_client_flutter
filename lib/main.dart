@@ -249,12 +249,30 @@ class HomePage extends StatelessWidget {
             )
           ],
         ),
-        const DragToMoveWindow(
-          child: SizedBox(
-            width: double.infinity,
-            height: 30,
+        SizedBox(
+          width: double.infinity,
+          height: 30,
+          child: Stack(
+            children: [
+              Positioned(
+                top: 0,
+                right: 0,
+                child: Row(
+                  children: const [
+                    MinimizeButton(),
+                    CloseButton(),
+                  ],
+                ),
+              ),
+              const DragToMoveWindow(
+                child: SizedBox(
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
+              ),
+            ],
           ),
-        )
+        ),
       ],
     );
   }
