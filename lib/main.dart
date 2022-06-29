@@ -1,6 +1,22 @@
 import 'package:flutter/widgets.dart';
+import 'package:window_manager/window_manager.dart';
+import './widgets.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+
+  WindowOptions windowOptions = const WindowOptions(
+    size: Size(1536, 864),
+    center: true,
+    backgroundColor: Color(0x00000000),
+    skipTaskbar: false,
+  );
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
+  });
+
   runApp(const MyApp());
 }
 
@@ -28,32 +44,32 @@ class HomePage extends StatelessWidget {
 
     var buttonBar = Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
+      children: const [
         Expanded(
-          child: _createThirdPartyLoginButton(
-            "images/facebook_icon.png",
-            const Color(0xff1877f2),
-            const Color(0xff1771e6),
+          child: ThirdPartyLoginButton(
+            iconName: "images/facebook_icon.png",
+            color: Color(0xff1877f2),
+            borderColor: Color(0xff1771e6),
           ),
         ),
-        const SizedBox(
+        SizedBox(
           width: 8,
         ),
         Expanded(
-          child: _createThirdPartyLoginButton(
-            "images/google_icon.png",
-            const Color(0xffffffff),
-            const Color(0xfff2f2f2),
+          child: ThirdPartyLoginButton(
+            iconName: "images/google_icon.png",
+            color: Color(0xffffffff),
+            borderColor: Color(0xfff2f2f2),
           ),
         ),
-        const SizedBox(
+        SizedBox(
           width: 8,
         ),
         Expanded(
-          child: _createThirdPartyLoginButton(
-            "images/apple_icon.png",
-            const Color(0xff000000),
-            const Color(0xff000000),
+          child: ThirdPartyLoginButton(
+            iconName: "images/apple_icon.png",
+            color: Color(0xff000000),
+            borderColor: Color(0xff000000),
           ),
         ),
       ],
@@ -61,6 +77,7 @@ class HomePage extends StatelessWidget {
 
     var signInForm = Column(
       children: [
+        // Sign In Text
         Container(
           padding: const EdgeInsets.only(
             top: 67,
@@ -74,18 +91,21 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ),
+        // Username Input Box
         Container(
           padding: const EdgeInsets.only(
             top: 26,
           ),
-          child: _createInputBox(),
+          child: const InputBox(),
         ),
+        // Password Input Box
         Container(
           padding: const EdgeInsets.only(
             top: 16,
           ),
-          child: _createInputBox(),
+          child: const InputBox(),
         ),
+        // Third Party Login Buttons
         Container(
           padding: const EdgeInsets.only(
             top: 16,
@@ -97,6 +117,7 @@ class HomePage extends StatelessWidget {
             child: buttonBar,
           ),
         ),
+        // Remember Me Checkbox
         Container(
           padding: const EdgeInsets.only(
             top: 10,
@@ -150,7 +171,7 @@ class HomePage extends StatelessWidget {
 
     var sidebar = Container(
         width: 400,
-        height: 864,
+        height: double.infinity,
         color: const Color(0xfff9f9f9),
         child: Stack(
           children: [
@@ -204,57 +225,32 @@ class HomePage extends StatelessWidget {
           ],
         ));
 
-    return Row(
+    return Stack(
       children: [
-        sidebar,
-        Expanded(
-          child: Container(
-            height: 864,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("images/background.jpg"),
-                fit: BoxFit.cover,
-                alignment: Alignment.topRight,
+        Row(
+          children: [
+            sidebar,
+            Expanded(
+              child: Container(
+                height: double.infinity,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("images/background.jpg"),
+                    fit: BoxFit.cover,
+                    alignment: Alignment.topRight,
+                  ),
+                ),
               ),
-            ),
+            )
+          ],
+        ),
+        const DragToMoveWindow(
+          child: SizedBox(
+            width: double.infinity,
+            height: 30,
           ),
         )
       ],
-    );
-  }
-
-  Container _createInputBox() {
-    return Container(
-      height: 48,
-      decoration: const BoxDecoration(
-        color: Color(0xffededed),
-        borderRadius: BorderRadius.all(
-          Radius.circular(4),
-        ),
-      ),
-    );
-  }
-
-  Container _createThirdPartyLoginButton(
-    String iconName,
-    Color color,
-    Color borderColor,
-  ) {
-    return Container(
-      height: 32,
-      decoration: BoxDecoration(
-        color: color,
-        border: Border.all(
-          color: borderColor,
-          width: 2,
-        ),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(4),
-        ),
-      ),
-      child: Image.asset(
-        iconName,
-      ),
     );
   }
 }
