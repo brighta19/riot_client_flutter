@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:window_manager/window_manager.dart';
@@ -18,9 +17,7 @@ class DragToMoveWindow extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onPanStart: (details) {
-        if (Platform.isWindows) {
-          windowManager.startDragging();
-        }
+        windowManager.startDragging();
       },
       child: child,
     );

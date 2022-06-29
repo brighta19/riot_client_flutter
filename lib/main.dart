@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:window_manager/window_manager.dart';
 import './widgets.dart';
@@ -6,20 +7,22 @@ import './widgets.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (Platform.isWindows) {
+  if (!kIsWeb) {
     await windowManager.ensureInitialized();
 
-    WindowOptions windowOptions = const WindowOptions(
-      size: Size(1536, 864),
-      center: true,
-      backgroundColor: Color(0x00000000),
-      skipTaskbar: false,
-    );
+    if (Platform.isWindows) {
+      WindowOptions windowOptions = const WindowOptions(
+        size: Size(1536, 864),
+        center: true,
+        backgroundColor: Color(0x00000000),
+        skipTaskbar: false,
+      );
 
-    windowManager.waitUntilReadyToShow(windowOptions, () async {
-      await windowManager.show();
-      await windowManager.focus();
-    });
+      windowManager.waitUntilReadyToShow(windowOptions, () async {
+        await windowManager.show();
+        await windowManager.focus();
+      });
+    }
   }
 
   runApp(const MyApp());
@@ -249,30 +252,31 @@ class HomePage extends StatelessWidget {
             )
           ],
         ),
-        SizedBox(
-          width: double.infinity,
-          height: 30,
-          child: Stack(
-            children: [
-              Positioned(
-                top: 0,
-                right: 0,
-                child: Row(
-                  children: const [
-                    MinimizeButton(),
-                    CloseButton(),
-                  ],
+        if (!kIsWeb)
+          SizedBox(
+            width: double.infinity,
+            height: 30,
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Row(
+                    children: const [
+                      MinimizeButton(),
+                      CloseButton(),
+                    ],
+                  ),
                 ),
-              ),
-              const DragToMoveWindow(
-                child: SizedBox(
-                  width: double.infinity,
-                  height: double.infinity,
+                const DragToMoveWindow(
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
       ],
     );
   }
