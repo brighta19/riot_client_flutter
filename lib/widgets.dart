@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 // The package "window_manager" has a DragToMoveArea Widget that drags, but
 // also maximizes/unmaximizes the window. I do not want the latter.
@@ -16,7 +18,9 @@ class DragToMoveWindow extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onPanStart: (details) {
-        windowManager.startDragging();
+        if (Platform.isWindows) {
+          windowManager.startDragging();
+        }
       },
       child: child,
     );
