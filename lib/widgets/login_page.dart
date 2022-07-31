@@ -7,10 +7,17 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: const [
-        SideArea(
-          versionString: "v53.0.0",
-        ),
+      children: [
+        const SideArea(versionString: "v53.0.0"),
+        Expanded(
+          child: Image.asset(
+            'images/background.jpg',
+            height: double.infinity,
+            fit: BoxFit.cover,
+            alignment: Alignment.topRight,
+            filterQuality: FilterQuality.high,
+          ),
+        )
       ],
     );
   }
