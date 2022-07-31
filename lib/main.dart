@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:riot_client_flutter/widgets/login_page.dart';
 import 'package:riot_client_flutter/widgets/widgets.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -55,11 +56,9 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.amber,
       body: Stack(
-        children: [
-          Row(
-            children: [],
-          ),
-          if (!kIsWeb) const WindowBar(),
+        children: const [
+          LoginPage(),
+          if (!kIsWeb) WindowBar(),
         ],
       ),
     );
