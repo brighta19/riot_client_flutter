@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:riot_client_flutter/widgets/widgets.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
@@ -53,11 +54,13 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.amber,
-      body: Center(
-        child: Text(
-          'Hello, World!',
-          style: Theme.of(context).textTheme.headline1,
-        ),
+      body: Stack(
+        children: [
+          Row(
+            children: [],
+          ),
+          if (!kIsWeb) const WindowBar(),
+        ],
       ),
     );
   }
