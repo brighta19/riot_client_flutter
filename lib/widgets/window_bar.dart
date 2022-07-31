@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
-import '../widgets.dart' as widgets;
+import 'window_buttons.dart' as btn;
 
 class WindowBar extends StatelessWidget {
   const WindowBar({Key? key}) : super(key: key);
@@ -18,8 +18,8 @@ class WindowBar extends StatelessWidget {
             right: 0,
             child: Row(
               children: const [
-                widgets.MinimizeButton(),
-                widgets.CloseButton(),
+                btn.MinimizeButton(),
+                btn.CloseButton(),
               ],
             ),
           ),
