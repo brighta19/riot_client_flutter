@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:riot_client_flutter/widgets/provider_button.dart';
+import 'package:riot_client_flutter/widgets/widgets.dart';
 
 class SideArea extends StatelessWidget {
   const SideArea({Key? key, required this.versionString}) : super(key: key);
@@ -44,11 +44,11 @@ class SideArea extends StatelessWidget {
     var signInForm = Column(
       children: [
         // Sign In Text
-        Container(
-          padding: const EdgeInsets.only(
+        const Padding(
+          padding: EdgeInsets.only(
             top: 67,
           ),
-          child: const Text(
+          child: Text(
             'Sign in',
             style: TextStyle(
               color: Color(0xff111111),
@@ -58,25 +58,30 @@ class SideArea extends StatelessWidget {
           ),
         ),
         // Username Input Box
-        Container(
-          padding: const EdgeInsets.only(
+        const Padding(
+          padding: EdgeInsets.only(
             top: 26,
           ),
-          child: const InputBox(),
+          child: CustomTextField(
+            hintText: 'Username',
+          ),
         ),
         // Password Input Box
-        Container(
-          padding: const EdgeInsets.only(
+        const Padding(
+          padding: EdgeInsets.only(
             top: 16,
           ),
-          child: const InputBox(),
+          child: CustomTextField(
+            obscureText: true,
+            hintText: 'Password',
+          ),
         ),
         // Third Party Login Buttons
-        Container(
+        Padding(
           padding: const EdgeInsets.only(
             top: 16,
           ),
-          child: Container(
+          child: Padding(
             padding: const EdgeInsets.only(
               top: 8,
             ),
@@ -84,19 +89,20 @@ class SideArea extends StatelessWidget {
           ),
         ),
         // Remember Me Checkbox
-        Container(
+        Padding(
           padding: const EdgeInsets.only(
             top: 10,
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Image.asset("images/checked_box.png"),
-              Container(
-                padding: const EdgeInsets.only(
+            children: const [
+              CustomCheckbox(
+                value: true,
+              ),
+              Padding(
+                padding: EdgeInsets.only(
                   left: 8,
                 ),
-                child: const Text(
+                child: Text(
                   "Stay signed in",
                   style: TextStyle(
                     color: Color(0xff111111),
@@ -137,14 +143,14 @@ class SideArea extends StatelessWidget {
       color: const Color(0xfff9f9f9),
       child: Stack(
         children: [
-          Container(
+          Padding(
             padding: const EdgeInsets.only(
               left: 56,
               right: 56,
             ),
             child: Column(
               children: [
-                Container(
+                Padding(
                   padding: const EdgeInsets.only(
                     top: 69,
                   ),
@@ -153,13 +159,13 @@ class SideArea extends StatelessWidget {
                 Expanded(
                   child: signInForm,
                 ),
-                Container(
+                Padding(
                   padding: const EdgeInsets.only(
                     bottom: 62,
                   ),
                   child: Image.asset('images/submit_btn.png'),
                 ),
-                Container(
+                Padding(
                   padding: const EdgeInsets.only(
                     bottom: 50,
                   ),
@@ -186,18 +192,21 @@ class SideArea extends StatelessWidget {
   }
 }
 
-class InputBox extends StatelessWidget {
-  const InputBox({Key? key}) : super(key: key);
+class CustomTextField extends StatelessWidget {
+  const CustomTextField({Key? key, this.obscureText, required this.hintText})
+      : super(key: key);
+
+  final bool? obscureText;
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 48,
-      decoration: const BoxDecoration(
-        color: Color(0xffededed),
-        borderRadius: BorderRadius.all(
-          Radius.circular(4),
-        ),
+    return TextField(
+      autofocus: true,
+      obscureText: obscureText ?? false,
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        labelText: hintText,
       ),
     );
   }
