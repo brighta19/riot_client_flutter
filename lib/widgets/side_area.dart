@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:riot_client_flutter/widgets/widgets.dart';
 
-class SideArea extends StatelessWidget {
+class SideArea extends StatefulWidget {
   const SideArea({Key? key, required this.versionString}) : super(key: key);
 
   final String versionString;
+
+  @override
+  State<SideArea> createState() => _SideAreaState();
+}
+
+class _SideAreaState extends State<SideArea> {
+  bool usernameIsNotEmpty = false;
+  bool passwordIsNotEmpty = false;
 
   @override
   Widget build(BuildContext context) {
@@ -58,22 +66,28 @@ class SideArea extends StatelessWidget {
           ),
         ),
         // Username Input Box
-        const Padding(
-          padding: EdgeInsets.only(
+        Padding(
+          padding: const EdgeInsets.only(
             top: 26,
           ),
           child: CustomTextField(
             hintText: 'Username',
+            onChanged: (String input) {
+              setState(() => usernameIsNotEmpty = input.isNotEmpty);
+            },
           ),
         ),
         // Password Input Box
-        const Padding(
-          padding: EdgeInsets.only(
+        Padding(
+          padding: const EdgeInsets.only(
             top: 16,
           ),
           child: CustomTextField(
             obscureText: true,
             hintText: 'Password',
+            onChanged: (String input) {
+              setState(() => passwordIsNotEmpty = input.isNotEmpty);
+            },
           ),
         ),
         // Third Party Login Buttons
@@ -163,7 +177,9 @@ class SideArea extends StatelessWidget {
                   padding: const EdgeInsets.only(
                     bottom: 62,
                   ),
-                  child: Image.asset('images/submit_btn.png'),
+                  child: SubmitButton(
+                    enabled: usernameIsNotEmpty && passwordIsNotEmpty,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -178,7 +194,7 @@ class SideArea extends StatelessWidget {
             bottom: 47,
             right: 47,
             child: Text(
-              versionString,
+              widget.versionString,
               style: const TextStyle(
                 color: Color(0xffc9c9c9),
                 fontSize: 11,
@@ -193,11 +209,13 @@ class SideArea extends StatelessWidget {
 }
 
 class CustomTextField extends StatelessWidget {
-  const CustomTextField({Key? key, this.obscureText, required this.hintText})
+  const CustomTextField(
+      {Key? key, this.obscureText, required this.hintText, this.onChanged})
       : super(key: key);
 
   final bool? obscureText;
   final String hintText;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -208,6 +226,7 @@ class CustomTextField extends StatelessWidget {
         border: const OutlineInputBorder(),
         labelText: hintText,
       ),
+      onChanged: onChanged,
     );
   }
 }
